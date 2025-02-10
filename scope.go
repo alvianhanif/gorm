@@ -258,8 +258,8 @@ func (scope *Scope) AddToVars(value interface{}) string {
 	_, skipBindVar := scope.InstanceGet("skip_bindvar")
 
 	if expr, ok := value.(*SqlExpr); ok {
-		exp := expr.expr
-		for _, arg := range expr.args {
+		exp := expr.Expr
+		for _, arg := range expr.Args {
 			if skipBindVar {
 				scope.AddToVars(arg)
 			} else {
@@ -786,8 +786,8 @@ func (scope *Scope) orderSQL() string {
 		if str, ok := order.(string); ok {
 			orders = append(orders, scope.quoteIfPossible(str))
 		} else if expr, ok := order.(*SqlExpr); ok {
-			exp := expr.expr
-			for _, arg := range expr.args {
+			exp := expr.Expr
+			for _, arg := range expr.Args {
 				exp = strings.Replace(exp, "?", scope.AddToVars(arg), 1)
 			}
 			orders = append(orders, exp)
